@@ -20,19 +20,57 @@ typedef struct {
     float Color[4];
 } Vertex;
 
+/* Square
 const Vertex Vertices[] =
 {
-    {{ 1,-1,-7}, {1,0,0,1}},
-    {{ 1, 1,-7}, {0,1,0,1}},
-    {{-1, 1,-7}, {0,0,1,1}},
-    {{-1,-1,-7}, {0,0,0,1}}
+    {{ 1,-1, 0}, {1,0,0,1}},
+    {{ 1, 1, 0}, {0,1,0,1}},
+    {{-1, 1, 0}, {0,0,1,1}},
+    {{-1,-1, 0}, {0,0,0,1}}
 };
-
 const GLubyte Indices[] =
 {
     0,1,2,
     2,3,0
 };
+
+*/
+
+/* Cube */
+const Vertex Vertices[] =
+{
+    {{ 1,-1, 0}, {1,0,0,1}},
+    {{ 1, 1, 0}, {1,0,0,1}},
+    {{-1, 1, 0}, {0,1,0,1}},
+    {{-1,-1, 0}, {0,1,0,1}},
+    {{ 1,-1,-1}, {1,0,0,1}},
+    {{ 1, 1,-1}, {1,0,0,1}},
+    {{-1, 1,-1}, {0,1,0,1}},
+    {{-1,-1,-1}, {0,1,0,1}}
+
+    
+};
+const GLubyte Indices[] =
+{
+    0,1,2,
+    2,3,0,
+    
+    4,6,5,
+    4,7,6,
+    
+    2,7,3,
+    7,6,2,
+    
+    0,4,1,
+    4,1,5,
+    
+    6,2,1,
+    1,6,5,
+    
+    0,3,7,
+    0,7,4
+};
+
 
 #pragma mark -
 
@@ -47,6 +85,11 @@ const GLubyte Indices[] =
     GLuint       _colorSlot;
     
     GLuint       _projectionUniform;
+    GLuint       _modelViewUniform;
+    
+    GLuint       _depthRenderBuffer;
+    
+    float        _currentRotation;
 }
 
 @end
@@ -57,6 +100,9 @@ const GLubyte Indices[] =
 {
     return [CAEAGLLayer class];
 }
+
+#pragma mark -
+#pragma mark GL Setup methods
 
 - (void)setupLayer
 {
@@ -86,12 +132,20 @@ const GLubyte Indices[] =
     [_context renderbufferStorage:GL_RENDERBUFFER fromDrawable:_eaglLayer];
 }
 
+- (void)setupDepthBuffer
+{
+    glGenRenderbuffers(1, &_depthRenderBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, _depthRenderBuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, self.frame.size.width, self.frame.size.height);
+}
+
 - (void)setupFrameBuffer
 {
     GLuint framebuffer;
     glGenFramebuffers(1, &framebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _colorRenderBuffer);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthRenderBuffer);
 }
 
 - (void)setupVBOs
@@ -107,15 +161,31 @@ const GLubyte Indices[] =
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
 }
 
-- (void)render
+- (void)setupDisplayLink
+{
+    CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(render:)];
+    [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+}
+#pragma mark -
+#pragma mark Render
+- (void)render:(CADisplayLink*)displayLink
 {
     glClearColor(0, 104.0/255.0, 55.0/255.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
     
+    // Project matrix
     CC3GLMatrix* projection = [CC3GLMatrix matrix];
     float h = 4.0f * self.frame.size.height / self.frame.size.width;
     [projection populateFromFrustumLeft:-2 andRight:2 andBottom:-h/2 andTop:h/2 andNear:4 andFar:10];
     glUniformMatrix4fv(_projectionUniform, 1, 0, projection.glMatrix);
+    
+    // Model view matrix
+    CC3GLMatrix* modelView = [CC3GLMatrix matrix];
+    [modelView populateFromTranslation:CC3VectorMake(sin(CACurrentMediaTime()), 0, -7)];
+    _currentRotation += displayLink.duration * 90;
+    [modelView rotateBy:CC3VectorMake(_currentRotation, _currentRotation, 0)];
+    glUniformMatrix4fv(_modelViewUniform, 1, 0, modelView.glMatrix);
     
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     
@@ -185,6 +255,7 @@ const GLubyte Indices[] =
     glEnableVertexAttribArray(_colorSlot);
     
     _projectionUniform = glGetUniformLocation(programHandle, "Projection");
+    _modelViewUniform = glGetUniformLocation(programHandle, "Modelview");
         
 }
 
@@ -196,11 +267,12 @@ const GLubyte Indices[] =
     if (self) {
         [self setupLayer];
         [self setupContext];
+        [self setupDepthBuffer];
         [self setupRenderBuffer];
         [self setupFrameBuffer];
         [self compileShaders];
         [self setupVBOs];
-        [self render];
+        [self setupDisplayLink];
     }
     return self;
 }
