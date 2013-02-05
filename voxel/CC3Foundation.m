@@ -525,7 +525,8 @@ GLubyte CCColorByteFromFloat(GLfloat colorValue) {
 @implementation NSObject (CC3)
 
 -(id) copyAutoreleased {
-	return [[self copy] autorelease];
+	//return [[self copy] autorelease];
+    return [self copy];   // ARC Fix
 }
 
 @end
