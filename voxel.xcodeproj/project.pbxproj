@@ -1,0 +1,446 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		439D997516C11B80001E26AD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D997416C11B80001E26AD /* UIKit.framework */; };
+		439D997716C11B80001E26AD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D997616C11B80001E26AD /* Foundation.framework */; };
+		439D997916C11B80001E26AD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D997816C11B80001E26AD /* CoreGraphics.framework */; };
+		439D997F16C11B80001E26AD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 439D997D16C11B80001E26AD /* InfoPlist.strings */; };
+		439D998116C11B80001E26AD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 439D998016C11B80001E26AD /* main.m */; };
+		439D998516C11B80001E26AD /* VXAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 439D998416C11B80001E26AD /* VXAppDelegate.m */; };
+		439D998716C11B80001E26AD /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 439D998616C11B80001E26AD /* Default.png */; };
+		439D998916C11B80001E26AD /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 439D998816C11B80001E26AD /* Default@2x.png */; };
+		439D998B16C11B80001E26AD /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 439D998A16C11B80001E26AD /* Default-568h@2x.png */; };
+		439D999316C11B80001E26AD /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D999216C11B80001E26AD /* SenTestingKit.framework */; };
+		439D999416C11B80001E26AD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D997416C11B80001E26AD /* UIKit.framework */; };
+		439D999516C11B80001E26AD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D997616C11B80001E26AD /* Foundation.framework */; };
+		439D999D16C11B80001E26AD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 439D999B16C11B80001E26AD /* InfoPlist.strings */; };
+		439D99A016C11B80001E26AD /* voxelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 439D999F16C11B80001E26AD /* voxelTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		439D999616C11B80001E26AD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 439D996716C11B80001E26AD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 439D996F16C11B80001E26AD;
+			remoteInfo = voxel;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		439D997016C11B80001E26AD /* voxel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = voxel.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		439D997416C11B80001E26AD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		439D997616C11B80001E26AD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		439D997816C11B80001E26AD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		439D997C16C11B80001E26AD /* voxel-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "voxel-Info.plist"; sourceTree = "<group>"; };
+		439D997E16C11B80001E26AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		439D998016C11B80001E26AD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		439D998216C11B80001E26AD /* voxel-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "voxel-Prefix.pch"; sourceTree = "<group>"; };
+		439D998316C11B80001E26AD /* VXAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VXAppDelegate.h; sourceTree = "<group>"; };
+		439D998416C11B80001E26AD /* VXAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VXAppDelegate.m; sourceTree = "<group>"; };
+		439D998616C11B80001E26AD /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		439D998816C11B80001E26AD /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		439D998A16C11B80001E26AD /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		439D999116C11B80001E26AD /* voxelTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = voxelTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		439D999216C11B80001E26AD /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		439D999A16C11B80001E26AD /* voxelTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "voxelTests-Info.plist"; sourceTree = "<group>"; };
+		439D999C16C11B80001E26AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		439D999E16C11B80001E26AD /* voxelTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voxelTests.h; sourceTree = "<group>"; };
+		439D999F16C11B80001E26AD /* voxelTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = voxelTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		439D996D16C11B80001E26AD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				439D997516C11B80001E26AD /* UIKit.framework in Frameworks */,
+				439D997716C11B80001E26AD /* Foundation.framework in Frameworks */,
+				439D997916C11B80001E26AD /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		439D998D16C11B80001E26AD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				439D999316C11B80001E26AD /* SenTestingKit.framework in Frameworks */,
+				439D999416C11B80001E26AD /* UIKit.framework in Frameworks */,
+				439D999516C11B80001E26AD /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		439D996516C11B80001E26AD = {
+			isa = PBXGroup;
+			children = (
+				439D997A16C11B80001E26AD /* voxel */,
+				439D999816C11B80001E26AD /* voxelTests */,
+				439D997316C11B80001E26AD /* Frameworks */,
+				439D997116C11B80001E26AD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		439D997116C11B80001E26AD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				439D997016C11B80001E26AD /* voxel.app */,
+				439D999116C11B80001E26AD /* voxelTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		439D997316C11B80001E26AD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				439D997416C11B80001E26AD /* UIKit.framework */,
+				439D997616C11B80001E26AD /* Foundation.framework */,
+				439D997816C11B80001E26AD /* CoreGraphics.framework */,
+				439D999216C11B80001E26AD /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		439D997A16C11B80001E26AD /* voxel */ = {
+			isa = PBXGroup;
+			children = (
+				439D998316C11B80001E26AD /* VXAppDelegate.h */,
+				439D998416C11B80001E26AD /* VXAppDelegate.m */,
+				439D997B16C11B80001E26AD /* Supporting Files */,
+			);
+			path = voxel;
+			sourceTree = "<group>";
+		};
+		439D997B16C11B80001E26AD /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				439D997C16C11B80001E26AD /* voxel-Info.plist */,
+				439D997D16C11B80001E26AD /* InfoPlist.strings */,
+				439D998016C11B80001E26AD /* main.m */,
+				439D998216C11B80001E26AD /* voxel-Prefix.pch */,
+				439D998616C11B80001E26AD /* Default.png */,
+				439D998816C11B80001E26AD /* Default@2x.png */,
+				439D998A16C11B80001E26AD /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		439D999816C11B80001E26AD /* voxelTests */ = {
+			isa = PBXGroup;
+			children = (
+				439D999E16C11B80001E26AD /* voxelTests.h */,
+				439D999F16C11B80001E26AD /* voxelTests.m */,
+				439D999916C11B80001E26AD /* Supporting Files */,
+			);
+			path = voxelTests;
+			sourceTree = "<group>";
+		};
+		439D999916C11B80001E26AD /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				439D999A16C11B80001E26AD /* voxelTests-Info.plist */,
+				439D999B16C11B80001E26AD /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		439D996F16C11B80001E26AD /* voxel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 439D99A316C11B80001E26AD /* Build configuration list for PBXNativeTarget "voxel" */;
+			buildPhases = (
+				439D996C16C11B80001E26AD /* Sources */,
+				439D996D16C11B80001E26AD /* Frameworks */,
+				439D996E16C11B80001E26AD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = voxel;
+			productName = voxel;
+			productReference = 439D997016C11B80001E26AD /* voxel.app */;
+			productType = "com.apple.product-type.application";
+		};
+		439D999016C11B80001E26AD /* voxelTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 439D99A616C11B80001E26AD /* Build configuration list for PBXNativeTarget "voxelTests" */;
+			buildPhases = (
+				439D998C16C11B80001E26AD /* Sources */,
+				439D998D16C11B80001E26AD /* Frameworks */,
+				439D998E16C11B80001E26AD /* Resources */,
+				439D998F16C11B80001E26AD /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				439D999716C11B80001E26AD /* PBXTargetDependency */,
+			);
+			name = voxelTests;
+			productName = voxelTests;
+			productReference = 439D999116C11B80001E26AD /* voxelTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		439D996716C11B80001E26AD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = VX;
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "Pat Smith";
+			};
+			buildConfigurationList = 439D996A16C11B80001E26AD /* Build configuration list for PBXProject "voxel" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 439D996516C11B80001E26AD;
+			productRefGroup = 439D997116C11B80001E26AD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				439D996F16C11B80001E26AD /* voxel */,
+				439D999016C11B80001E26AD /* voxelTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		439D996E16C11B80001E26AD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				439D997F16C11B80001E26AD /* InfoPlist.strings in Resources */,
+				439D998716C11B80001E26AD /* Default.png in Resources */,
+				439D998916C11B80001E26AD /* Default@2x.png in Resources */,
+				439D998B16C11B80001E26AD /* Default-568h@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		439D998E16C11B80001E26AD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				439D999D16C11B80001E26AD /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		439D998F16C11B80001E26AD /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		439D996C16C11B80001E26AD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				439D998116C11B80001E26AD /* main.m in Sources */,
+				439D998516C11B80001E26AD /* VXAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		439D998C16C11B80001E26AD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				439D99A016C11B80001E26AD /* voxelTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		439D999716C11B80001E26AD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 439D996F16C11B80001E26AD /* voxel */;
+			targetProxy = 439D999616C11B80001E26AD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		439D997D16C11B80001E26AD /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				439D997E16C11B80001E26AD /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		439D999B16C11B80001E26AD /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				439D999C16C11B80001E26AD /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		439D99A116C11B80001E26AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		439D99A216C11B80001E26AD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		439D99A416C11B80001E26AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "voxel/voxel-Prefix.pch";
+				INFOPLIST_FILE = "voxel/voxel-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		439D99A516C11B80001E26AD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "voxel/voxel-Prefix.pch";
+				INFOPLIST_FILE = "voxel/voxel-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		439D99A716C11B80001E26AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/voxel.app/voxel";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "voxel/voxel-Prefix.pch";
+				INFOPLIST_FILE = "voxelTests/voxelTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		439D99A816C11B80001E26AD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/voxel.app/voxel";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "voxel/voxel-Prefix.pch";
+				INFOPLIST_FILE = "voxelTests/voxelTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		439D996A16C11B80001E26AD /* Build configuration list for PBXProject "voxel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				439D99A116C11B80001E26AD /* Debug */,
+				439D99A216C11B80001E26AD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		439D99A316C11B80001E26AD /* Build configuration list for PBXNativeTarget "voxel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				439D99A416C11B80001E26AD /* Debug */,
+				439D99A516C11B80001E26AD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		439D99A616C11B80001E26AD /* Build configuration list for PBXNativeTarget "voxelTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				439D99A716C11B80001E26AD /* Debug */,
+				439D99A816C11B80001E26AD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 439D996716C11B80001E26AD /* Project object */;
+}
