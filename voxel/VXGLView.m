@@ -39,14 +39,14 @@ const GLubyte Indices[] =
 /* Cube */
 const Vertex Vertices[] =
 {
-    {{ 1,-1, 0}, {1,0,0,1}},
-    {{ 1, 1, 0}, {1,0,0,1}},
-    {{-1, 1, 0}, {0,1,0,1}},
-    {{-1,-1, 0}, {0,1,0,1}},
+    {{ 1,-1, 1}, {1,0,0,1}},
+    {{ 1, 1, 1}, {1,0,0,1}},
+    {{-1, 1, 1}, {0,1,0,1}},
+    {{-1,-1, 1}, {0,1,0,1}},
     {{ 1,-1,-1}, {1,0,0,1}},
     {{ 1, 1,-1}, {1,0,0,1}},
-    {{-1, 1,-1}, {0,1,0,1}},
-    {{-1,-1,-1}, {0,1,0,1}}
+    {{-1, 1,-1}, {0,0,1,1}},
+    {{-1,-1,-1}, {0,0,1,1}}
 
     
 };
@@ -79,15 +79,15 @@ const GLubyte Indices[] =
 {
     CAEAGLLayer* _eaglLayer;
     EAGLContext* _context;
+    
     GLuint       _colorRenderBuffer;
+    GLuint       _depthRenderBuffer;
     
     GLuint       _positionSlot;
     GLuint       _colorSlot;
     
     GLuint       _projectionUniform;
     GLuint       _modelViewUniform;
-    
-    GLuint       _depthRenderBuffer;
     
     float        _currentRotation;
 }
