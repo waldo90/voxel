@@ -7,15 +7,27 @@
 //
 
 #import "VXAppDelegate.h"
+#import "VXGLView.h"
+
+@interface VXAppDelegate ()
+@property (strong, nonatomic) IBOutlet VXGLView* glView;
+@end
 
 @implementation VXAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    self.window = [[UIWindow alloc] initWithFrame:screenBounds];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
+    //self.window.backgroundColor = [UIColor whiteColor];
+    
+    
+    self.glView = [[VXGLView alloc] initWithFrame:screenBounds];
+    [self.window addSubview:_glView];
+    
     [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
