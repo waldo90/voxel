@@ -10,7 +10,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
-#import "CC3GLMatrix.h"
+//#import "CC3GLMatrix.h"
+#import <GLKit/GLKit.h>
 
 #pragma mark -
 #pragma mark vertex data to draw
@@ -41,12 +42,12 @@ const Vertex Vertices[] =
 {
     {{ 1,-1, 1}, {1,0,0,1}},
     {{ 1, 1, 1}, {1,0,0,1}},
-    {{-1, 1, 1}, {0,1,0,1}},
-    {{-1,-1, 1}, {0,1,0,1}},
+    {{-1, 1, 1}, {0.5,0,0.5,1}},
+    {{-1,-1, 1}, {0.5,0,0.5,1}},
     {{ 1,-1,-1}, {1,0,0,1}},
     {{ 1, 1,-1}, {1,0,0,1}},
-    {{-1, 1,-1}, {0,0,1,1}},
-    {{-1,-1,-1}, {0,0,1,1}}
+    {{-1, 1,-1}, {1,0,0,1}},
+    {{-1,-1,-1}, {1,0,1,1}}
 
     
 };
@@ -175,24 +176,27 @@ const GLubyte Indices[] =
     glEnable(GL_DEPTH_TEST);
     
     // Project matrix
-    CC3GLMatrix* projection = [CC3GLMatrix matrix];
+
     float h = 4.0f * self.frame.size.height / self.frame.size.width;
-    [projection populateFromFrustumLeft:-2 andRight:2 andBottom:-h/2 andTop:h/2 andNear:4 andFar:10];
-    glUniformMatrix4fv(_projectionUniform, 1, 0, projection.glMatrix);
+    GLKMatrix4 projection = GLKMatrix4MakeFrustum(-2, 2, -h/2, h/2, 4, 10);
     
-    // Model view matrix
-    CC3GLMatrix* modelView = [CC3GLMatrix matrix];
-    [modelView populateFromTranslation:CC3VectorMake(sin(CACurrentMediaTime()), 0, -7)];
-    _currentRotation += displayLink.duration * 90;
-    [modelView rotateBy:CC3VectorMake(_currentRotation, _currentRotation, 0)];
-    glUniformMatrix4fv(_modelViewUniform, 1, 0, modelView.glMatrix);
+    glUniformMatrix4fv(_projectionUniform, 1, 0, projection.m);
+    
+    GLKMatrix4 modelView = GLKMatrix4MakeTranslation(sin(CACurrentMediaTime()), 0, -7);
+    _currentRotation += displayLink.duration;
+    modelView = GLKMatrix4Rotate(modelView, _currentRotation, 1, 1, 0);
+    glUniformMatrix4fv(_modelViewUniform, 1, 0, modelView.m);
     
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     
+    
+    // Entity rendering
     glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
     glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(sizeof(float)*3));
     
     glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]), GL_UNSIGNED_BYTE, 0);
+    
+    // Present
     
     [_context presentRenderbuffer:GL_RENDERBUFFER];
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4356EA3916C2F845006589AB /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4356EA3816C2F844006589AB /* GLKit.framework */; };
 		439D997516C11B80001E26AD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D997416C11B80001E26AD /* UIKit.framework */; };
 		439D997716C11B80001E26AD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D997616C11B80001E26AD /* Foundation.framework */; };
 		439D997916C11B80001E26AD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D997816C11B80001E26AD /* CoreGraphics.framework */; };
@@ -30,6 +31,7 @@
 		439D99D416C14806001E26AD /* CC3GLMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 439D99CA16C14806001E26AD /* CC3GLMatrix.m */; };
 		439D99D516C14806001E26AD /* CC3Math.m in Sources */ = {isa = PBXBuildFile; fileRef = 439D99CB16C14806001E26AD /* CC3Math.m */; };
 		439D99D616C14806001E26AD /* CC3Kazmath.c in Sources */ = {isa = PBXBuildFile; fileRef = 439D99CC16C14806001E26AD /* CC3Kazmath.c */; };
+		439D99E116C1919E001E26AD /* VXBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 439D99E016C1919E001E26AD /* VXBox.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4356EA3816C2F844006589AB /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		439D997016C11B80001E26AD /* voxel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = voxel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		439D997416C11B80001E26AD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		439D997616C11B80001E26AD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -78,6 +81,8 @@
 		439D99D016C14806001E26AD /* CC3Logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Logging.h; sourceTree = "<group>"; };
 		439D99D116C14806001E26AD /* CC3Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Math.h; sourceTree = "<group>"; };
 		439D99D216C14806001E26AD /* ccTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccTypes.h; sourceTree = "<group>"; };
+		439D99DF16C1919E001E26AD /* VXBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VXBox.h; sourceTree = "<group>"; };
+		439D99E016C1919E001E26AD /* VXBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VXBox.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4356EA3916C2F845006589AB /* GLKit.framework in Frameworks */,
 				439D99AF16C11CE6001E26AD /* OpenGLES.framework in Frameworks */,
 				439D99AD16C11CDE001E26AD /* QuartzCore.framework in Frameworks */,
 				439D997516C11B80001E26AD /* UIKit.framework in Frameworks */,
@@ -109,6 +115,7 @@
 		439D996516C11B80001E26AD = {
 			isa = PBXGroup;
 			children = (
+				4356EA3816C2F844006589AB /* GLKit.framework */,
 				439D997A16C11B80001E26AD /* voxel */,
 				439D999816C11B80001E26AD /* voxelTests */,
 				439D997316C11B80001E26AD /* Frameworks */,
@@ -149,6 +156,8 @@
 				439D99B016C12436001E26AD /* SimpleVertex.glsl */,
 				439D997B16C11B80001E26AD /* Supporting Files */,
 				439D99B416C12563001E26AD /* SimpleFragment.glsl */,
+				439D99DF16C1919E001E26AD /* VXBox.h */,
+				439D99E016C1919E001E26AD /* VXBox.m */,
 			);
 			path = voxel;
 			sourceTree = "<group>";
@@ -322,6 +331,7 @@
 				439D99D416C14806001E26AD /* CC3GLMatrix.m in Sources */,
 				439D99D516C14806001E26AD /* CC3Math.m in Sources */,
 				439D99D616C14806001E26AD /* CC3Kazmath.c in Sources */,
+				439D99E116C1919E001E26AD /* VXBox.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,6 +499,7 @@
 				439D99A516C11B80001E26AD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		439D99A616C11B80001E26AD /* Build configuration list for PBXNativeTarget "voxelTests" */ = {
 			isa = XCConfigurationList;
@@ -497,6 +508,7 @@
 				439D99A816C11B80001E26AD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
