@@ -10,47 +10,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
-//#import "CC3GLMatrix.h"
 #import <GLKit/GLKit.h>
+#import "VXBox.h"
 
-#pragma mark -
-#pragma mark vertex data to draw
-
-typedef struct {
-    float Position[3];
-    float Color[4];
-} Vertex;
-
-/* Square
-const Vertex Vertices[] =
-{
-    {{ 1,-1, 0}, {1,0,0,1}},
-    {{ 1, 1, 0}, {0,1,0,1}},
-    {{-1, 1, 0}, {0,0,1,1}},
-    {{-1,-1, 0}, {0,0,0,1}}
-};
-const GLubyte Indices[] =
-{
-    0,1,2,
-    2,3,0
-};
-
-*/
-
-/* Cube */
-const Vertex Vertices[] =
-{
-    {{ 1,-1, 1}, {1,0,0,1}},
-    {{ 1, 1, 1}, {1,0,0,1}},
-    {{-1, 1, 1}, {0.5,0,0.5,1}},
-    {{-1,-1, 1}, {0.5,0,0.5,1}},
-    {{ 1,-1,-1}, {1,0,0,1}},
-    {{ 1, 1,-1}, {1,0,0,1}},
-    {{-1, 1,-1}, {1,0,0,1}},
-    {{-1,-1,-1}, {1,0,1,1}}
-
-    
-};
 const GLubyte Indices[] =
 {
     0,1,2,
@@ -91,6 +53,8 @@ const GLubyte Indices[] =
     GLuint       _modelViewUniform;
     
     float        _currentRotation;
+    
+    VXBox* box;
 }
 
 @end
@@ -151,10 +115,11 @@ const GLubyte Indices[] =
 
 - (void)setupVBOs
 {
+    box = [[VXBox alloc] init];
     GLuint vertexBuffer;
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, [box.vbo.buffer length], [box vertexData], GL_STATIC_DRAW);
     
     GLuint indexBuffer;
     glGenBuffers(1, &indexBuffer);
@@ -191,8 +156,8 @@ const GLubyte Indices[] =
     
     
     // Entity rendering
-    glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-    glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(sizeof(float)*3));
+    glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, sizeof(InterleavingVertexData), 0);
+    glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE, sizeof(InterleavingVertexData), (GLvoid*)(sizeof(GLKVector3)+4));
     
     glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]), GL_UNSIGNED_BYTE, 0);
     
