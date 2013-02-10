@@ -58,6 +58,7 @@ const GLubyte Indices[] =
 
     float        _pan_x;
     float        _pan_y;
+    float        _zoom;
 }
 
 @end
@@ -152,7 +153,9 @@ const GLubyte Indices[] =
     float aspect = fabsf(self.bounds.size.width / self.bounds.size.height);
     GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
 
-    GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0, 0.0, -30.0);
+    // Base model view matrix.
+    // Used to translate the both the projectionMatrix and the modelViewMatrix.
+    GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0, 0.0, -30.0 + _zoom);
     
     glUniformMatrix4fv(_projectionUniform, 1, 0, GLKMatrix4Multiply(projectionMatrix, baseModelViewMatrix).m);
     
@@ -266,12 +269,37 @@ const GLubyte Indices[] =
     _pan_y += translatedPoint.y/100;
 }
 
+-(void)pinch:(UIPinchGestureRecognizer*)pgr
+{
+    static float lastScale = 1.0;
+    if ([pgr scale] < lastScale) {
+        _zoom += [pgr scale] - lastScale - 1;
+    } else {
+        _zoom -= lastScale - [pgr scale] - 1;
+    }
+    
+    lastScale = [pgr scale];
+    if (pgr.state == UIGestureRecognizerStateEnded) {
+        lastScale = 1.0;
+    }
+    if (_zoom > 26.0) {
+        _zoom = 26.0;
+    }
+    if (_zoom < -10.0) {
+        _zoom = -10.0;
+    }
+}
+
 - (void)setupGestures
 {
     UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
     [self addGestureRecognizer:panGesture];
     _pan_x = 0.0;
     _pan_y = 0.0;
+    
+    UIPinchGestureRecognizer* pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
+    [self addGestureRecognizer:pinchGesture];
+    _zoom = 0.0;
 }
 #pragma mark -
 
