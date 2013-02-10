@@ -11,7 +11,6 @@
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 #import <GLKit/GLKit.h>
-//#import "VXBox.h"
 #import "VXBlock.h"
 #import "VXVoxelBox.h"
 
@@ -60,14 +59,14 @@ const GLubyte Indices[] =
     
     float        _currentRotation;
     
-//    VXBox* box;
-    //int          _voxels[VOX_ARRAY_SIZE][VOX_ARRAY_SIZE][VOX_ARRAY_SIZE];
     VXBlock*     _voxels[VOX_ARRAY_SIZE][VOX_ARRAY_SIZE][VOX_ARRAY_SIZE];
     VXVoxelBox*  _voxelBox;
 
     float        _pan_x;
     float        _pan_y;
     float        _zoom;
+    
+    BOOL         _disco;
 }
 
 @end
@@ -128,7 +127,6 @@ const GLubyte Indices[] =
 
 - (void)setupVBOs
 {
-    //box = [[VXBox alloc] init];
     _voxelBox = [[VXVoxelBox alloc] init];
     GLuint vertexBuffer;
     glGenBuffers(1, &vertexBuffer);
@@ -157,10 +155,6 @@ const GLubyte Indices[] =
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
 
     // Connect program vars
-// For VXBox
-//    glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, sizeof(InterleavingVertexData), 0);
-//    glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE, sizeof(InterleavingVertexData), BUFFER_OFFSET(32));
-      // For VXVoxelBox
     glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));
     glVertexAttribPointer(_normalSlot,   3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));
     
@@ -189,8 +183,12 @@ const GLubyte Indices[] =
         for (int j=0; j < VOX_ARRAY_SIZE; j++) {
             for (int k=0; k < VOX_ARRAY_SIZE; k++) {
                 if (_voxels[i][j][k].active) {
-                    //glUniform4fv(_colorSlot, 1, [self randomColor].v);
-                    glUniform4fv(_colorSlot, 1, [self BlockTypeColor:_voxels[i][j][k].type].v);
+                    if (_disco) {
+                        // Triple tap surprise
+                        glUniform4fv(_colorSlot, 1, [self randomColor].v);
+                    } else {
+                        glUniform4fv(_colorSlot, 1, [self BlockTypeColor:_voxels[i][j][k].type].v);
+                    }
                     voxelView = GLKMatrix4Translate(modelViewMatrix, i*2.5, j*2.5, -k*2.5);
                     glUniformMatrix4fv(_modelViewUniform, 1, 0, voxelView.m);
                     //glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]), GL_UNSIGNED_BYTE, 0);
@@ -225,19 +223,19 @@ const GLubyte Indices[] =
 {
     switch (blockType) {
         case BlockType_Dirt:
-            return GLKVector4Make(0.8, 0.4, 0.8, 1.0);
+            return GLKVector4Make(139.0/255.0, 69.0/255.0, 19.0/255.0, 1.0);
         case BlockType_Grass:
             return GLKVector4Make(0.0, 0.8, 0.2, 1.0);
         case BlockType_Sand:
-            return GLKVector4Make(0.5, 0.3, 0.7, 1.0);
+            return GLKVector4Make(1.0, 1.0, 0.8, 1.0);
         case BlockType_Stone:
             return GLKVector4Make(0.6, 0.6, 0.6, 1.0);
         case BlockType_Water:
             return GLKVector4Make(0.0, 0.0, 0.8, 1.0);
         case BlockType_Wood:
-            return GLKVector4Make(0.4, 0.2, 0.4, 1.0);
+            return GLKVector4Make(222.0/255.0, 184/255.0, 135.0/255.0, 1.0);
         default:
-            return GLKVector4Make(1.0, 1.0, 0.8, 1.0);
+            return GLKVector4Make(0.0/255.0, 100.0/255.0, 0.0/255.0, 1.0);
     }
 }
 #pragma mark -
@@ -312,7 +310,6 @@ const GLubyte Indices[] =
     for (int i = 0; i < VOX_ARRAY_SIZE; i++) {
         for (int j = 0; j < VOX_ARRAY_SIZE; j++) {
             for (int k = 0; k < VOX_ARRAY_SIZE; k++) {
-                //_voxels[i][j][k] = rand() % 5;
                 VXBlock* block = [[VXBlock alloc] init];
                 block.active = (rand() % 10) > 5;
                 block.type = rand() % BlockType_NumTypes;
@@ -320,6 +317,10 @@ const GLubyte Indices[] =
             }
         }
     }
+}
+- (void)tap:(UITapGestureRecognizer*)tgr
+{
+    _disco = !_disco;
 }
 - (void)pan:(UIPanGestureRecognizer*)pgr
 {
@@ -359,6 +360,11 @@ const GLubyte Indices[] =
     UIPinchGestureRecognizer* pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
     [self addGestureRecognizer:pinchGesture];
     _zoom = 0.0;
+    
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    tapGesture.numberOfTapsRequired = 3;
+    [self addGestureRecognizer:tapGesture];
+    _disco = NO;
 }
 #pragma mark -
 
