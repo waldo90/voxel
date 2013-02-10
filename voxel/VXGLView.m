@@ -34,8 +34,7 @@ const GLubyte Indices[] =
     0,7,4
 };
 
-
-#pragma mark -
+#define VOX_ARRAY_SIZE 10
 
 
 @interface VXGLView ()
@@ -55,6 +54,10 @@ const GLubyte Indices[] =
     float        _currentRotation;
     
     VXBox* box;
+    GLubyte*     _voxels[VOX_ARRAY_SIZE][VOX_ARRAY_SIZE][VOX_ARRAY_SIZE];
+
+    float        _pan_x;
+    float        _pan_y;
 }
 
 @end
@@ -136,31 +139,49 @@ const GLubyte Indices[] =
 #pragma mark Render
 - (void)render:(CADisplayLink*)displayLink
 {
-    glClearColor(0, 104.0/255.0, 55.0/255.0, 1.0);
+    glClearColor(100/255.0, 150.0/255.0, 100.0/255.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
-    
-    // Project matrix
-
-    float h = 4.0f * self.frame.size.height / self.frame.size.width;
-    GLKMatrix4 projection = GLKMatrix4MakeFrustum(-2, 2, -h/2, h/2, 4, 10);
-    
-    glUniformMatrix4fv(_projectionUniform, 1, 0, projection.m);
-    
-    GLKMatrix4 modelView = GLKMatrix4MakeTranslation(sin(CACurrentMediaTime()), 0, -7);
-    _currentRotation += displayLink.duration;
-    modelView = GLKMatrix4Rotate(modelView, _currentRotation, 1, 1, 0);
-    glUniformMatrix4fv(_modelViewUniform, 1, 0, modelView.m);
-    
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
-    
-    
-    // Entity rendering
+
+    // Connect program vars
     glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, sizeof(InterleavingVertexData), 0);
     glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE, sizeof(InterleavingVertexData), (GLvoid*)(sizeof(GLKVector3)+4));
     
-    glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]), GL_UNSIGNED_BYTE, 0);
+    // Projection matrix
+    float aspect = fabsf(self.bounds.size.width / self.bounds.size.height);
+    GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
+
+    GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0, 0.0, -30.0);
     
+    glUniformMatrix4fv(_projectionUniform, 1, 0, GLKMatrix4Multiply(projectionMatrix, baseModelViewMatrix).m);
+    
+    // Model view matrix
+    GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation(-12.5, -12.5, 12.5);
+    GLKMatrix4 rotationMatrix = GLKMatrix4MakeRotation(GLKMathDegreesToRadians(_pan_x), 0, 1, 0);
+    rotationMatrix = GLKMatrix4Rotate(rotationMatrix, GLKMathDegreesToRadians(_pan_y), 1, 0, 0);
+    modelViewMatrix = GLKMatrix4Multiply(rotationMatrix, modelViewMatrix);
+    modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
+    
+    GLKMatrix4 voxelView;
+    for (int i=0; i < VOX_ARRAY_SIZE; i++) {
+        for (int j=0; j < VOX_ARRAY_SIZE; j++) {
+            for (int k=0; k < VOX_ARRAY_SIZE; k++) {
+                if (_voxels[i][j][k]) {
+                    voxelView = GLKMatrix4Translate(modelViewMatrix, i*2.5, j*2.5, -k*2.5);
+                    glUniformMatrix4fv(_modelViewUniform, 1, 0, voxelView.m);
+                    glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]), GL_UNSIGNED_BYTE, 0);
+                }
+            }
+        }
+    }
+    
+    
+    /*
+    glUniformMatrix4fv(_modelViewUniform, 1, 0, modelViewMatrix.m);
+    glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]), GL_UNSIGNED_BYTE, 0);
+    */
+
     // Present
     
     [_context presentRenderbuffer:GL_RENDERBUFFER];
@@ -228,12 +249,39 @@ const GLubyte Indices[] =
         
 }
 
+- (void)setupVoxels
+{
+    for (int i = 0; i < VOX_ARRAY_SIZE; i++) {
+        for (int j = 0; j < VOX_ARRAY_SIZE; j++) {
+            for (int k = 0; k < VOX_ARRAY_SIZE; k++) {
+                _voxels[i][j][k] = 1;
+            }
+        }
+    }
+}
+- (void)pan:(UIPanGestureRecognizer*)pgr
+{
+    CGPoint translatedPoint = [pgr velocityInView:self];
+    _pan_x += translatedPoint.x/100;
+    _pan_y += translatedPoint.y/100;
+}
+
+- (void)setupGestures
+{
+    UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+    [self addGestureRecognizer:panGesture];
+    _pan_x = 0.0;
+    _pan_y = 0.0;
+}
 #pragma mark -
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        
+        [self setupGestures];
         [self setupLayer];
         [self setupContext];
         [self setupDepthBuffer];
@@ -241,6 +289,7 @@ const GLubyte Indices[] =
         [self setupFrameBuffer];
         [self compileShaders];
         [self setupVBOs];
+        [self setupVoxels];
         [self setupDisplayLink];
     }
     return self;
