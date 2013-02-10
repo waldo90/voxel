@@ -54,7 +54,7 @@ const GLubyte Indices[] =
     float        _currentRotation;
     
     VXBox* box;
-    GLubyte*     _voxels[VOX_ARRAY_SIZE][VOX_ARRAY_SIZE][VOX_ARRAY_SIZE];
+    int          _voxels[VOX_ARRAY_SIZE][VOX_ARRAY_SIZE][VOX_ARRAY_SIZE];
 
     float        _pan_x;
     float        _pan_y;
@@ -167,7 +167,7 @@ const GLubyte Indices[] =
     for (int i=0; i < VOX_ARRAY_SIZE; i++) {
         for (int j=0; j < VOX_ARRAY_SIZE; j++) {
             for (int k=0; k < VOX_ARRAY_SIZE; k++) {
-                if (_voxels[i][j][k]) {
+                if (_voxels[i][j][k] > 3) {
                     voxelView = GLKMatrix4Translate(modelViewMatrix, i*2.5, j*2.5, -k*2.5);
                     glUniformMatrix4fv(_modelViewUniform, 1, 0, voxelView.m);
                     glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]), GL_UNSIGNED_BYTE, 0);
@@ -254,7 +254,7 @@ const GLubyte Indices[] =
     for (int i = 0; i < VOX_ARRAY_SIZE; i++) {
         for (int j = 0; j < VOX_ARRAY_SIZE; j++) {
             for (int k = 0; k < VOX_ARRAY_SIZE; k++) {
-                _voxels[i][j][k] = rand() % 2;
+                _voxels[i][j][k] = rand() % 5;
             }
         }
     }
