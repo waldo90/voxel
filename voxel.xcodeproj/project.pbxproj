@@ -33,6 +33,8 @@
 		439D99D516C14806001E26AD /* CC3Math.m in Sources */ = {isa = PBXBuildFile; fileRef = 439D99CB16C14806001E26AD /* CC3Math.m */; };
 		439D99D616C14806001E26AD /* CC3Kazmath.c in Sources */ = {isa = PBXBuildFile; fileRef = 439D99CC16C14806001E26AD /* CC3Kazmath.c */; };
 		439D99E116C1919E001E26AD /* VXBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 439D99E016C1919E001E26AD /* VXBox.m */; };
+		43D4573416C80D3900D1D6FF /* VXBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D4573316C80D3900D1D6FF /* VXBlock.m */; };
+		43D4573716C83DD500D1D6FF /* VXVoxelBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 43D4573616C83DD400D1D6FF /* VXVoxelBox.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +88,10 @@
 		439D99D216C14806001E26AD /* ccTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccTypes.h; sourceTree = "<group>"; };
 		439D99DF16C1919E001E26AD /* VXBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VXBox.h; sourceTree = "<group>"; };
 		439D99E016C1919E001E26AD /* VXBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VXBox.m; sourceTree = "<group>"; };
+		43D4573216C80D3900D1D6FF /* VXBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VXBlock.h; sourceTree = "<group>"; };
+		43D4573316C80D3900D1D6FF /* VXBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VXBlock.m; sourceTree = "<group>"; };
+		43D4573516C83DD400D1D6FF /* VXVoxelBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VXVoxelBox.h; sourceTree = "<group>"; };
+		43D4573616C83DD400D1D6FF /* VXVoxelBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VXVoxelBox.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,12 +163,16 @@
 				439D99A916C11C50001E26AD /* VXGLView.h */,
 				439D99AA16C11C50001E26AD /* VXGLView.m */,
 				439D99B016C12436001E26AD /* SimpleVertex.glsl */,
-				439D997B16C11B80001E26AD /* Supporting Files */,
 				439D99B416C12563001E26AD /* SimpleFragment.glsl */,
 				439D99DF16C1919E001E26AD /* VXBox.h */,
 				439D99E016C1919E001E26AD /* VXBox.m */,
 				4356EA3C16C30421006589AB /* VXVBO.h */,
 				4356EA3D16C30421006589AB /* VXVBO.m */,
+				439D997B16C11B80001E26AD /* Supporting Files */,
+				43D4573216C80D3900D1D6FF /* VXBlock.h */,
+				43D4573316C80D3900D1D6FF /* VXBlock.m */,
+				43D4573516C83DD400D1D6FF /* VXVoxelBox.h */,
+				43D4573616C83DD400D1D6FF /* VXVoxelBox.m */,
 			);
 			path = voxel;
 			sourceTree = "<group>";
@@ -338,6 +348,8 @@
 				439D99D616C14806001E26AD /* CC3Kazmath.c in Sources */,
 				439D99E116C1919E001E26AD /* VXBox.m in Sources */,
 				4356EA3E16C30421006589AB /* VXVBO.m in Sources */,
+				43D4573416C80D3900D1D6FF /* VXBlock.m in Sources */,
+				43D4573716C83DD500D1D6FF /* VXVoxelBox.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

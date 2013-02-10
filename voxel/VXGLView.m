@@ -11,7 +11,12 @@
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 #import <GLKit/GLKit.h>
-#import "VXBox.h"
+//#import "VXBox.h"
+#import "VXBlock.h"
+#import "VXVoxelBox.h"
+
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+#define ARC4RANDOM_MAX      0x100000000
 
 const GLubyte Indices[] =
 {
@@ -46,15 +51,19 @@ const GLubyte Indices[] =
     GLuint       _depthRenderBuffer;
     
     GLuint       _positionSlot;
+    GLuint       _normalSlot;
     GLuint       _colorSlot;
     
     GLuint       _projectionUniform;
     GLuint       _modelViewUniform;
+    GLuint       _normalUniform;
     
     float        _currentRotation;
     
-    VXBox* box;
-    int          _voxels[VOX_ARRAY_SIZE][VOX_ARRAY_SIZE][VOX_ARRAY_SIZE];
+//    VXBox* box;
+    //int          _voxels[VOX_ARRAY_SIZE][VOX_ARRAY_SIZE][VOX_ARRAY_SIZE];
+    VXBlock*     _voxels[VOX_ARRAY_SIZE][VOX_ARRAY_SIZE][VOX_ARRAY_SIZE];
+    VXVoxelBox*  _voxelBox;
 
     float        _pan_x;
     float        _pan_y;
@@ -119,16 +128,18 @@ const GLubyte Indices[] =
 
 - (void)setupVBOs
 {
-    box = [[VXBox alloc] init];
+    //box = [[VXBox alloc] init];
+    _voxelBox = [[VXVoxelBox alloc] init];
     GLuint vertexBuffer;
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, [box.vbo.buffer length], [box vertexData], GL_STATIC_DRAW);
-    
+    glBufferData(GL_ARRAY_BUFFER, [_voxelBox vertexDataSize], [_voxelBox vertexData], GL_STATIC_DRAW);
+/*
     GLuint indexBuffer;
     glGenBuffers(1, &indexBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
+*/
 }
 
 - (void)setupDisplayLink
@@ -140,14 +151,19 @@ const GLubyte Indices[] =
 #pragma mark Render
 - (void)render:(CADisplayLink*)displayLink
 {
-    glClearColor(100/255.0, 150.0/255.0, 100.0/255.0, 1.0);
+    glClearColor(40/255.0, 40.0/255.0, 50.0/255.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
 
     // Connect program vars
-    glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, sizeof(InterleavingVertexData), 0);
-    glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE, sizeof(InterleavingVertexData), (GLvoid*)(sizeof(GLKVector3)+4));
+// For VXBox
+//    glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, sizeof(InterleavingVertexData), 0);
+//    glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE, sizeof(InterleavingVertexData), BUFFER_OFFSET(32));
+      // For VXVoxelBox
+    glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));
+    glVertexAttribPointer(_normalSlot,   3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));
+    
     
     // Projection matrix
     float aspect = fabsf(self.bounds.size.width / self.bounds.size.height);
@@ -166,14 +182,25 @@ const GLubyte Indices[] =
     modelViewMatrix = GLKMatrix4Multiply(rotationMatrix, modelViewMatrix);
     modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
     
+    
+    // Draw
     GLKMatrix4 voxelView;
     for (int i=0; i < VOX_ARRAY_SIZE; i++) {
         for (int j=0; j < VOX_ARRAY_SIZE; j++) {
             for (int k=0; k < VOX_ARRAY_SIZE; k++) {
-                if (_voxels[i][j][k] > 3) {
+                if (_voxels[i][j][k].active) {
+                    //glUniform4fv(_colorSlot, 1, [self randomColor].v);
+                    glUniform4fv(_colorSlot, 1, [self BlockTypeColor:_voxels[i][j][k].type].v);
                     voxelView = GLKMatrix4Translate(modelViewMatrix, i*2.5, j*2.5, -k*2.5);
                     glUniformMatrix4fv(_modelViewUniform, 1, 0, voxelView.m);
-                    glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]), GL_UNSIGNED_BYTE, 0);
+                    //glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]), GL_UNSIGNED_BYTE, 0);
+                    
+                    // Normals
+                    GLKMatrix3 normalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(voxelView), NULL);
+                    glUniformMatrix3fv(_normalUniform, 1, 0, normalMatrix.m);
+
+                    
+                    glDrawArrays(GL_TRIANGLES, 0, 36);
                 }
             }
         }
@@ -190,6 +217,29 @@ const GLubyte Indices[] =
     [_context presentRenderbuffer:GL_RENDERBUFFER];
 }
 
+- (GLKVector4)randomColor
+{
+     return GLKVector4Make(((double)arc4random() / ARC4RANDOM_MAX), ((double)arc4random() / ARC4RANDOM_MAX), ((double)arc4random() / ARC4RANDOM_MAX), 1.0);
+}
+- (GLKVector4)BlockTypeColor:(int)blockType
+{
+    switch (blockType) {
+        case BlockType_Dirt:
+            return GLKVector4Make(0.8, 0.4, 0.8, 1.0);
+        case BlockType_Grass:
+            return GLKVector4Make(0.0, 0.8, 0.2, 1.0);
+        case BlockType_Sand:
+            return GLKVector4Make(0.5, 0.3, 0.7, 1.0);
+        case BlockType_Stone:
+            return GLKVector4Make(0.6, 0.6, 0.6, 1.0);
+        case BlockType_Water:
+            return GLKVector4Make(0.0, 0.0, 0.8, 1.0);
+        case BlockType_Wood:
+            return GLKVector4Make(0.4, 0.2, 0.4, 1.0);
+        default:
+            return GLKVector4Make(1.0, 1.0, 0.8, 1.0);
+    }
+}
 #pragma mark -
 #pragma mark Shader compiling
 
@@ -243,21 +293,30 @@ const GLubyte Indices[] =
     glUseProgram(programHandle);
     
     _positionSlot = glGetAttribLocation(programHandle, "Position");
-    _colorSlot = glGetAttribLocation(programHandle, "SourceColor");
+    _normalSlot = glGetAttribLocation(programHandle, "Normal");
+    //_colorSlot = glGetAttribLocation(programHandle, "SourceColor");
     glEnableVertexAttribArray(_positionSlot);
-    glEnableVertexAttribArray(_colorSlot);
+    glEnableVertexAttribArray(_normalSlot);
+    //glEnableVertexAttribArray(_colorSlot);
+    _colorSlot = glGetUniformLocation(programHandle, "SourceColor");
     
     _projectionUniform = glGetUniformLocation(programHandle, "Projection");
     _modelViewUniform = glGetUniformLocation(programHandle, "Modelview");
+    _normalUniform = glGetUniformLocation(programHandle, "NormalMatrix");
         
 }
 
 - (void)setupVoxels
 {
+    
     for (int i = 0; i < VOX_ARRAY_SIZE; i++) {
         for (int j = 0; j < VOX_ARRAY_SIZE; j++) {
             for (int k = 0; k < VOX_ARRAY_SIZE; k++) {
-                _voxels[i][j][k] = rand() % 5;
+                //_voxels[i][j][k] = rand() % 5;
+                VXBlock* block = [[VXBlock alloc] init];
+                block.active = (rand() % 10) > 5;
+                block.type = rand() % BlockType_NumTypes;
+                _voxels[i][j][k] = block;
             }
         }
     }

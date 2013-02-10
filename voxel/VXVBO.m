@@ -79,6 +79,10 @@ static inline VertexIndices VertexIndicesMake(GLuint a, GLuint b, GLuint c)
     [_buffer appendBytes:vertex length:_vertex_size];
 }
 
+-(long)vertexDataSize
+{
+    return [_buffer length];
+}
 - (const void *)vertexData
 {
     return [_buffer bytes];

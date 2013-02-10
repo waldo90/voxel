@@ -20,6 +20,7 @@ AAAABBBCCC
 
 - (void)pushVertex:(const void*)vertex;
 
+-(long)vertexDataSize;
 - (const void *)vertexData;
 
 
