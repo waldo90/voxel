@@ -254,7 +254,7 @@ const GLubyte Indices[] =
     for (int i = 0; i < VOX_ARRAY_SIZE; i++) {
         for (int j = 0; j < VOX_ARRAY_SIZE; j++) {
             for (int k = 0; k < VOX_ARRAY_SIZE; k++) {
-                _voxels[i][j][k] = 1;
+                _voxels[i][j][k] = rand() % 2;
             }
         }
     }
