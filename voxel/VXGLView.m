@@ -311,7 +311,8 @@ const GLubyte Indices[] =
         for (int j = 0; j < VOX_ARRAY_SIZE; j++) {
             for (int k = 0; k < VOX_ARRAY_SIZE; k++) {
                 VXBlock* block = [[VXBlock alloc] init];
-                block.active = (rand() % 10) > 5;
+                //block.active = (rand() % 10) > 5;
+                block.active = YES;
                 block.type = rand() % BlockType_NumTypes;
                 _voxels[i][j][k] = block;
             }
@@ -319,6 +320,13 @@ const GLubyte Indices[] =
     }
 }
 - (void)tap:(UITapGestureRecognizer*)tgr
+{
+    CGPoint screen_coords = [tgr locationInView:self];
+    // Translate this back via projection and modelview matricies.
+    
+}
+
+- (void)tap3:(UITapGestureRecognizer*)tgr
 {
     _disco = !_disco;
 }
@@ -362,8 +370,12 @@ const GLubyte Indices[] =
     _zoom = 0.0;
     
     UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
-    tapGesture.numberOfTapsRequired = 3;
+    tapGesture.numberOfTapsRequired = 1;
     [self addGestureRecognizer:tapGesture];
+    
+    UITapGestureRecognizer* tap3Gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap3:)];
+    tap3Gesture.numberOfTapsRequired = 3;
+    [self addGestureRecognizer:tap3Gesture];
     _disco = NO;
 }
 #pragma mark -
