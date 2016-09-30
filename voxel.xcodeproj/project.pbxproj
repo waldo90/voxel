@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4352A46C1D9E95DD00B7BF74 /* voxelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4352A46B1D9E95DD00B7BF74 /* voxelTests.m */; };
+		4352A4741D9EA1AD00B7BF74 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 4352A4731D9EA1AD00B7BF74 /* LICENSE */; };
 		4356EA3916C2F845006589AB /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4356EA3816C2F844006589AB /* GLKit.framework */; };
 		4356EA3E16C30421006589AB /* VXVBO.m in Sources */ = {isa = PBXBuildFile; fileRef = 4356EA3D16C30421006589AB /* VXVBO.m */; };
 		439D997516C11B80001E26AD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D997416C11B80001E26AD /* UIKit.framework */; };
@@ -43,6 +44,7 @@
 		4352A4691D9E95D100B7BF74 /* voxelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = voxelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4352A46B1D9E95DD00B7BF74 /* voxelTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = voxelTests.m; sourceTree = "<group>"; };
 		4352A46D1D9E95DD00B7BF74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4352A4731D9EA1AD00B7BF74 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		4356EA3816C2F844006589AB /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		4356EA3C16C30421006589AB /* VXVBO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VXVBO.h; sourceTree = "<group>"; };
 		4356EA3D16C30421006589AB /* VXVBO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VXVBO.m; sourceTree = "<group>"; };
@@ -109,7 +111,7 @@
 		439D996516C11B80001E26AD = {
 			isa = PBXGroup;
 			children = (
-				4356EA3816C2F844006589AB /* GLKit.framework */,
+				4352A4731D9EA1AD00B7BF74 /* LICENSE */,
 				439D997A16C11B80001E26AD /* voxel */,
 				4352A46A1D9E95DD00B7BF74 /* voxelTests */,
 				439D997316C11B80001E26AD /* Frameworks */,
@@ -129,6 +131,7 @@
 		439D997316C11B80001E26AD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4356EA3816C2F844006589AB /* GLKit.framework */,
 				439D99AE16C11CE6001E26AD /* OpenGLES.framework */,
 				439D99AC16C11CDE001E26AD /* QuartzCore.framework */,
 				439D997416C11B80001E26AD /* UIKit.framework */,
@@ -261,6 +264,7 @@
 				439D997F16C11B80001E26AD /* InfoPlist.strings in Resources */,
 				439D998716C11B80001E26AD /* Default.png in Resources */,
 				439D998916C11B80001E26AD /* Default@2x.png in Resources */,
+				4352A4741D9EA1AD00B7BF74 /* LICENSE in Resources */,
 				439D998B16C11B80001E26AD /* Default-568h@2x.png in Resources */,
 				439D99B116C12436001E26AD /* SimpleVertex.glsl in Resources */,
 				439D99B516C12563001E26AD /* SimpleFragment.glsl in Resources */,
