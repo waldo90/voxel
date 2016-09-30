@@ -13,9 +13,9 @@
 struct _InterleavingVertexData
 {
     GLKVector3 vertices;    //vertices
-//    GLKVector3 normal;      //normals
+//  GLKVector3 normal;      //normals
     GLKVector4 color;       //color
-    //    GLKVector2 texture;     //texture coordinates
+//  GLKVector2 texture;     //texture coordinates
 };
 
 typedef struct _InterleavingVertexData InterleavingVertexData;

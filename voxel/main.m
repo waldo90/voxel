@@ -14,5 +14,6 @@ int main(int argc, char *argv[])
 {
     @autoreleasepool {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([VXAppDelegate class]));
+//        return UIApplicationMain(argc, argv, nil, @"VXAppDelegate");
     }
 }

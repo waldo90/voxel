@@ -67,6 +67,14 @@ const GLubyte Indices[] =
     float        _zoom;
     
     BOOL         _disco;
+    
+    GLKMatrix4 projectionMatrix;
+    GLKMatrix4 baseModelViewMatrix;
+    GLKMatrix4 modelViewMatrix;
+    
+    GLuint     _vertexBuffer;
+    GLuint     _rayBuffer;
+    GLfloat    _ray[12];
 }
 
 @end
@@ -128,10 +136,22 @@ const GLubyte Indices[] =
 - (void)setupVBOs
 {
     _voxelBox = [[VXVoxelBox alloc] init];
-    GLuint vertexBuffer;
-    glGenBuffers(1, &vertexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+
+    glGenBuffers(1, &_vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, [_voxelBox vertexDataSize], [_voxelBox vertexData], GL_STATIC_DRAW);
+    
+    _ray[0] = _ray[1] = _ray[2] = 0.0f;
+    _ray[3] = _ray[4] = _ray[5] = 1.0f;
+    _ray[6] = 100.0f;
+    _ray[7] = _ray[8] = 0.0f;
+    _ray[9] = _ray[10] = _ray[11] = 1.0f;
+
+    glGenBuffers(1, &_rayBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, _rayBuffer);
+    glBufferData(GL_ARRAY_BUFFER, 48, _ray, GL_STATIC_DRAW);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 /*
     GLuint indexBuffer;
     glGenBuffers(1, &indexBuffer);
@@ -154,30 +174,48 @@ const GLubyte Indices[] =
     glEnable(GL_DEPTH_TEST);
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
 
-    // Connect program vars
-    glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));
-    glVertexAttribPointer(_normalSlot,   3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));
     
     
     // Projection matrix
-    float aspect = fabsf(self.bounds.size.width / self.bounds.size.height);
-    GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
+    float aspect = fabs(self.bounds.size.width / self.bounds.size.height);
+    projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
 
+    
     // Base model view matrix.
     // Used to translate the both the projectionMatrix and the modelViewMatrix.
-    GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0, 0.0, -30.0 + _zoom);
+    baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0, 0.0, -30.0 + _zoom);
     
     glUniformMatrix4fv(_projectionUniform, 1, 0, GLKMatrix4Multiply(projectionMatrix, baseModelViewMatrix).m);
+
     
     // Model view matrix
-    GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation(-12.5, -12.5, 12.5);
+    modelViewMatrix = GLKMatrix4MakeTranslation(-12.5, -12.5, 12.5);
     GLKMatrix4 rotationMatrix = GLKMatrix4MakeRotation(GLKMathDegreesToRadians(_pan_x), 0, 1, 0);
     rotationMatrix = GLKMatrix4Rotate(rotationMatrix, GLKMathDegreesToRadians(_pan_y), 1, 0, 0);
     modelViewMatrix = GLKMatrix4Multiply(rotationMatrix, modelViewMatrix);
     modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
     
-    
+    // Draw ray
+    glBindBuffer(GL_ARRAY_BUFFER, _rayBuffer);
+    //glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
+    glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));
+    glVertexAttribPointer(_normalSlot,   3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));
+    glUniform4fv(_colorSlot, 1, GLKVector4Make(1.0, 0.0, 0.0, 1.0).v);
+    GLKMatrix3 normalMatrix = GLKMatrix3Identity;
+    glUniformMatrix3fv(_normalUniform, 1, 0, normalMatrix.m);
+    glUniformMatrix4fv(_modelViewUniform, 1, 0, modelViewMatrix.m);
+    glLineWidth(4.0f);
+    glDrawArrays(GL_LINES, 0, 2);
+   
+   
+
     // Draw
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
+    // Connect program vars
+    glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));
+    glVertexAttribPointer(_normalSlot,   3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));
+    
+
     GLKMatrix4 voxelView;
     for (int i=0; i < VOX_ARRAY_SIZE; i++) {
         for (int j=0; j < VOX_ARRAY_SIZE; j++) {
@@ -189,7 +227,7 @@ const GLubyte Indices[] =
                     } else {
                         glUniform4fv(_colorSlot, 1, [self BlockTypeColor:_voxels[i][j][k].type].v);
                     }
-                    voxelView = GLKMatrix4Translate(modelViewMatrix, i*2.5, j*2.5, -k*2.5);
+                    voxelView = GLKMatrix4Translate(modelViewMatrix, i*2.0, j*2.0, -k*2.0);
                     glUniformMatrix4fv(_modelViewUniform, 1, 0, voxelView.m);
                     //glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]), GL_UNSIGNED_BYTE, 0);
                     
@@ -203,7 +241,7 @@ const GLubyte Indices[] =
             }
         }
     }
-    
+
     
     /*
     glUniformMatrix4fv(_modelViewUniform, 1, 0, modelViewMatrix.m);
@@ -252,7 +290,7 @@ const GLubyte Indices[] =
     }
     GLuint shaderHandle = glCreateShader(shaderType);
     const char* shaderStringUTF8 = [shaderString UTF8String];
-    int shaderStringLength = [shaderString length];
+    int shaderStringLength = (int)[shaderString length];
     glShaderSource(shaderHandle, 1, &shaderStringUTF8, &shaderStringLength);
     
     glCompileShader(shaderHandle);
@@ -311,8 +349,8 @@ const GLubyte Indices[] =
         for (int j = 0; j < VOX_ARRAY_SIZE; j++) {
             for (int k = 0; k < VOX_ARRAY_SIZE; k++) {
                 VXBlock* block = [[VXBlock alloc] init];
-                //block.active = (rand() % 10) > 5;
-                block.active = YES;
+                block.active = (rand() % 10) > 7;
+                //block.active = YES;
                 block.type = rand() % BlockType_NumTypes;
                 _voxels[i][j][k] = block;
             }
@@ -321,9 +359,58 @@ const GLubyte Indices[] =
 }
 - (void)tap:(UITapGestureRecognizer*)tgr
 {
-    CGPoint screen_coords = [tgr locationInView:self];
-    // Translate this back via projection and modelview matricies.
+    CGPoint position = [tgr locationInView:self];
+    NSLog(@"tap       : x:%f y:%f", position.x, position.y);
+    float x = position.x;
+    float y = self.bounds.size.height - position.y;
+    // normalise coords (within -1.0 to 1.0 range)
+    GLKVector4 normalisedVector = GLKVector4Make((2*x/self.bounds.size.width), (2*y/self.bounds.size.height), -1, 1);
     
+    
+    NSLog(@"normalised: x:%f y:%f", normalisedVector.x, normalisedVector.y);
+    
+    //GLKMatrix4 baseMatrix = GLKMatrix4Multiply(projectionMatrix, baseModelViewMatrix);
+    //GLKMatrix4 baseMatrix = modelViewMatrix;
+    GLKMatrix4 baseMatrix = GLKMatrix4Multiply(projectionMatrix, baseModelViewMatrix);
+
+    bool invertable;
+    GLKMatrix4 iBaseMatrix = GLKMatrix4Invert(baseMatrix, &invertable);
+    if (! invertable) {
+        NSLog(@"Projection matrix couldn't be inverted");
+        return;
+    }
+
+    GLKVector4 near_point = GLKMatrix4MultiplyVector4(iBaseMatrix, normalisedVector);
+    
+    near_point.v[3] = 1.0/near_point.v[3];
+    near_point = GLKVector4Make(near_point.v[0]*near_point.v[3], near_point.v[1]*near_point.v[3], near_point.v[2]*near_point.v[3], 1);
+    NSLog(@"Near point: x:%f y:%f z:%f", near_point.x, near_point.y, near_point.z);
+    
+    normalisedVector.z = 1.0;
+    GLKMatrix4 farMatrix = GLKMatrix4Multiply(projectionMatrix, baseModelViewMatrix);
+    farMatrix = GLKMatrix4Multiply(farMatrix, modelViewMatrix);
+    GLKMatrix4 inversedModelViewMatrix = GLKMatrix4Invert(farMatrix, &invertable);
+    GLKVector4 far_point = GLKMatrix4MultiplyVector4(inversedModelViewMatrix, normalisedVector);
+    
+    far_point.v[3] = 1.0/far_point.v[3];
+    far_point = GLKVector4Make(far_point.v[0]*far_point.v[3], far_point.v[1]*far_point.v[3], far_point.v[2]*far_point.v[3], 1);
+
+    NSLog(@"Far point : x:%f y:%f z:%f", far_point.x, far_point.y, far_point.z);
+    
+    _ray[0] = near_point.x;
+    _ray[1] = near_point.y;
+    _ray[2] = near_point.z;
+    _ray[3] = _ray[4] = _ray[5] = 1.0f;
+    _ray[6] = far_point.x;
+    _ray[7] = far_point.y;
+    _ray[8] = far_point.z;
+    _ray[9] = _ray[10] = _ray[11] = 1.0f;
+
+    glBindBuffer(GL_ARRAY_BUFFER, _rayBuffer);
+    glBufferData(GL_ARRAY_BUFFER, 48, _ray, GL_STATIC_DRAW);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 }
 
 - (void)tap3:(UITapGestureRecognizer*)tgr
@@ -392,7 +479,7 @@ const GLubyte Indices[] =
         [self setupDepthBuffer];
         [self setupRenderBuffer];
         [self setupFrameBuffer];
-        [self compileShaders];
+        [self compileShaders];       
         [self setupVBOs];
         [self setupVoxels];
         [self setupDisplayLink];

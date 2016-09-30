@@ -18,16 +18,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    self.window = [[UIWindow alloc] initWithFrame:screenBounds];
-    // Override point for customization after application launch.
-    //self.window.backgroundColor = [UIColor whiteColor];
-    
-    
     self.glView = [[VXGLView alloc] initWithFrame:screenBounds];
-    [self.window addSubview:_glView];
-    
+    self.window = [[UIWindow alloc] initWithFrame:screenBounds];
+    self.window.rootViewController = [[UIViewController alloc]initWithNibName:nil bundle:nil];
+    self.window.rootViewController.view = _glView;
     [self.window makeKeyAndVisible];
-    
     return YES;
 }
 
