@@ -2,31 +2,38 @@
 //  voxelTests.m
 //  voxelTests
 //
-//  Created by Pat Smith on 05/02/2013.
-//  Copyright (c) 2013 Pat Smith. All rights reserved.
+//  Created by Patrick Smith on 30/09/2016.
+//  Copyright © 2016 Pat Smith. All rights reserved.
 //
 
-#import "voxelTests.h"
+#import <XCTest/XCTest.h>
+
+@interface voxelTests : XCTestCase
+
+@end
 
 @implementation voxelTests
 
-- (void)setUp
-{
+- (void)setUp {
     [super setUp];
-    
-    // Set-up code here.
+    // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
-- (void)tearDown
-{
-    // Tear-down code here.
-    
+- (void)tearDown {
+    // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
 
-- (void)testExample
-{
-    STFail(@"Unit tests are not implemented yet in voxelTests");
+- (void)testExample {
+    // This is an example of a functional test case.
+    // Use XCTAssert and related functions to verify your tests produce the correct results.
+}
+
+- (void)testPerformanceExample {
+    // This is an example of a performance test case.
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+    }];
 }
 
 @end
